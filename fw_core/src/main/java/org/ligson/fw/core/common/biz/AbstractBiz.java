@@ -116,7 +116,7 @@ public abstract class AbstractBiz<Q extends BaseRequestDto, R extends BaseRespon
         Field[] superFields = requestDto.getClass().getSuperclass().getDeclaredFields();
         Field[] allFields = new Field[fields.length + superFields.length];
         System.arraycopy(fields, 0, allFields, 0, fields.length);
-        System.arraycopy(superFields, 0, allFields, allFields.length - 2, superFields.length);
+        System.arraycopy(superFields, 0, allFields, fields.length - 1, superFields.length);
 
         for (Field field : allFields) {
             Object value = null;
