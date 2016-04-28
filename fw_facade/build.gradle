@@ -1,2 +1,5 @@
 group 'org.ligson.fw'
 version '1.0-SNAPSHOT'
+dependencies {
+    compile "org.ligson.fw:fw_string:1.0-SNAPSHOT"
+}
