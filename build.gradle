@@ -1,0 +1,65 @@
+subprojects {
+//插件
+    apply plugin: 'java'
+    apply plugin: "idea"
+
+//jdk编译版本
+    sourceCompatibility = 1.8
+
+
+    repositories {
+        maven { url "http://nexus.eatuo.com:81/content/groups/public/" }
+        mavenCentral()
+    }
+
+    ext {
+        slf4jVersion = "1.7.14"
+        logbackVersion = "1.1.3"
+        guavaVersion = "19.0"
+        fastjsonVersion = "1.2.7"
+        junitVersion = "4.9"
+        springVersion = "4.2.5.RELEASE"
+        bcVersion = "1.46"
+    }
+    dependencies {
+        //slf4j配置
+        compile "org.slf4j:slf4j-api:${slf4jVersion}"
+        compile("ch.qos.logback:logback-classic:${logbackVersion}"){
+            exclude(group:"org.slf4j")
+        }
+        compile "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
+
+        //google java工具类
+        compile "com.google.guava:guava:${guavaVersion}"
+
+        //fastjson
+        compile "com.alibaba:fastjson:${fastjsonVersion}"
+
+        //apache-commons
+        compile "commons-lang:commons-lang:2.6"
+        compile "commons-io:commons-io:2.4"
+        compile "commons-collections:commons-collections:3.2.2"
+        compile("commons-beanutils:commons-beanutils:1.9.2"){
+            exclude(group:" commons-logging")
+            exclude(group:" commons-collections")
+        }
+        compile("commons-digester:commons-digester:1.8"){
+            exclude(group:" commons-logging")
+            exclude(group:" commons-beanutils")
+        }
+        compile "commons-codec:commons-codec:1.10"
+
+        //junit
+        testCompile "junit:junit:${junitVersion}"
+
+        //bc
+        compile "org.bouncycastle:bcprov-jdk16:${bcVersion}"
+        compile "org.bouncycastle:bcmail-jdk16:${bcVersion}"
+        compile "org.bouncycastle:bcpg-jdk16:${bcVersion}"
+
+    }
+    //编码乱码
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+}
