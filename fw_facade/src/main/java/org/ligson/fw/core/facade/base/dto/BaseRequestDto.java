@@ -2,7 +2,6 @@ package org.ligson.fw.core.facade.base.dto;
 
 import org.apache.commons.lang.StringUtils;
 import org.ligson.fw.core.facade.annotation.Param;
-import org.ligson.fw.core.facade.web.vo.ErrorField;
 import org.ligson.fw.string.validator.DataValidator;
 import org.ligson.fw.string.validator.EmailValidator;
 import org.ligson.fw.string.validator.PhoneValidator;
@@ -11,9 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 请求实体基础类
@@ -22,7 +19,7 @@ import java.util.List;
 public class BaseRequestDto extends BaseDto {
     private static final Logger logger = LoggerFactory.getLogger(BaseRequestDto.class);
 
-    private List<ErrorField> errorFields = new ArrayList<>();
+    private Map<String, String> errorFieldMap = new HashMap<>();
     /**
      * 版本号
      */
@@ -51,12 +48,12 @@ public class BaseRequestDto extends BaseDto {
         this.charset = charset;
     }
 
-    public List<ErrorField> getErrorFields() {
-        return errorFields;
+    public Map<String, String> getErrorFieldMap() {
+        return errorFieldMap;
     }
 
-    public void setErrorFields(List<ErrorField> errorFields) {
-        this.errorFields = errorFields;
+    public void setErrorFieldMap(Map<String, String> errorFieldMap) {
+        this.errorFieldMap = errorFieldMap;
     }
 
     @Override
@@ -72,6 +69,8 @@ public class BaseRequestDto extends BaseDto {
         for (Field field : fields) {
             Object value;
             String name = field.getName();
+            List<String> errors = new ArrayList<>();
+
             try {
                 String javaName = name.substring(0, 1).toUpperCase() + name.substring(1);
                 String getMethodName = "get" + javaName;
@@ -86,41 +85,36 @@ public class BaseRequestDto extends BaseDto {
                     if (value == null) {
                         String errorMsg = "不允许为空";
                         logger.warn("{}不允许为空", name);
-                        ErrorField errorField = new ErrorField(name, errorMsg);
-                        errorFields.add(errorField);
+                        errors.add(errorMsg);
                     }
                 }
                 if (value != null) {
                     if (param.email()) {
                         if (!EmailValidator.isValidEmail(value.toString())) {
                             String errorMsg = "不是一个有效的邮箱格式";
-                            ErrorField errorField = new ErrorField(name, errorMsg);
-                            errorFields.add(errorField);
                             logger.warn("请求参数{}的值({})不是一个有效的邮箱格式", name, value);
+                            errors.add(errorMsg);
                         }
                     }
                     if (param.mobile()) {
                         if (!PhoneValidator.isMobile(value.toString())) {
                             String errorMsg = "不是一个有效的手机号格式";
-                            ErrorField errorField = new ErrorField(name, errorMsg);
                             logger.warn("请求参数{}的值({})不是一个有效的手机号格式", name, value);
-                            errorFields.add(errorField);
+                            errors.add(errorMsg);
                         }
                     }
                     if (param.integer()) {
                         if (!DataValidator.isIntege(value.toString())) {
                             String errorMsg = "不是一个正整数格式";
-                            ErrorField errorField = new ErrorField(name, errorMsg);
                             logger.warn("请求参数{}的值({})不是一个正整数格式", name, value);
-                            errorFields.add(errorField);
+                            errors.add(errorMsg);
                         }
                     }
                     if (!StringUtils.isEmpty(param.regexp())) {
                         if (!value.toString().matches(param.regexp())) {
                             String errorMsg = "格式不正确";
-                            ErrorField errorField = new ErrorField(name, errorMsg);
                             logger.warn("请求参数{}的值{}与正则({})格式不一致", name, value, param.regexp());
-                            errorFields.add(errorField);
+                            errors.add(errorMsg);
                         }
                     }
                     if (param.inList().length != 0) {
@@ -128,24 +122,21 @@ public class BaseRequestDto extends BaseDto {
                         if (idx == -1) {
                             String errorMsg = "不在范围内";
                             logger.warn("请求参数{}的值{}不在范围({})内格式不一致", name, value, Arrays.toString(param.inList()));
-                            ErrorField errorField = new ErrorField(name, errorMsg);
-                            errorFields.add(errorField);
+                            errors.add(errorMsg);
                         }
                     }
                     if (param.minLen() != -1) {
                         if (value.toString().length() < param.minLen()) {
                             String errorMsg = "长度不能小于" + param.minLen();
-                            ErrorField errorField = new ErrorField(name, errorMsg);
                             logger.warn("请求参数{}的值{}的长度不能小于{}", name, value, param.minLen());
-                            errorFields.add(errorField);
+                            errors.add(errorMsg);
                         }
                     }
                     if (param.maxLen() != -1) {
                         if (value.toString().length() > param.maxLen()) {
                             String errorMsg = "长度不能大于" + param.maxLen();
-                            ErrorField errorField = new ErrorField(name, errorMsg);
                             logger.warn("请求参数{}的值{}的长度不能大于{}", name, value, param.maxLen());
-                            errorFields.add(errorField);
+                            errors.add(errorMsg);
                         }
                     }
 
@@ -153,32 +144,40 @@ public class BaseRequestDto extends BaseDto {
                     if ((param.min() != -1) || (param.max() != -1)) {
                         if (!DataValidator.isNum(value.toString())) {
                             String errorMsg = "不是一个整数格式";
-                            ErrorField errorField = new ErrorField(name, errorMsg);
                             logger.warn("请求参数{}的值({})不是一个整数格式", name, value);
-                            errorFields.add(errorField);
-                            return false;
+                            errors.add(errorMsg);
+                            continue;
                         }
                         int num = Integer.parseInt(value.toString());
                         if (param.min() != -1) {
                             if (num < param.min()) {
                                 String errorMsg = "不能小于" + param.min();
-                                ErrorField errorField = new ErrorField(name, errorMsg);
                                 logger.warn("请求参数{}的值{}不能小于{}", name, value, param.min());
-                                errorFields.add(errorField);
+                                errors.add(errorMsg);
                             }
                         }
                         if (param.max() != -1) {
                             if (num > param.max()) {
                                 String errorMsg = "不能大于" + param.max();
-                                ErrorField errorField = new ErrorField(name, errorMsg);
                                 logger.warn("请求参数{}的值{}不能大于{}", name, value, param.max());
-                                errorFields.add(errorField);
+                                errors.add(errorMsg);
                             }
                         }
                     }
                 }
             }
+            if (errors.size() > 0) {
+                String errorMsg = "";
+                for (int i = 0; i < errors.size(); i++) {
+                    String msg = errors.get(i);
+                    errorMsg += msg;
+                    if (i != errors.size() - 1) {
+                        errorMsg += ";";
+                    }
+                }
+                errorFieldMap.put(name, errorMsg);
+            }
         }
-        return errorFields.size() == 0;
+        return errorFieldMap.size() == 0;
     }
 }
