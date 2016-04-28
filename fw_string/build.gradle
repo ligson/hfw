@@ -1,2 +1,3 @@
 group 'org.ligson.fw'
+archivesBaseName = "fw_string"
 version '1.0-SNAPSHOT'

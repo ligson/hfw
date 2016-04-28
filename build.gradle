@@ -2,6 +2,7 @@ subprojects {
 //插件
     apply plugin: 'java'
     apply plugin: "idea"
+    apply plugin: 'maven'
 
 //jdk编译版本
     sourceCompatibility = 1.8
@@ -10,6 +11,20 @@ subprojects {
     repositories {
         maven { url "http://nexus.eatuo.com:81/content/groups/public/" }
         mavenCentral()
+    }
+    //参考配置http://central.sonatype.org/pages/gradle.html
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: "http://nexus.eatuo.com:81/content/repositories/lecxe/") {
+                    authentication(userName: "deployment", password: "deployment")
+                }
+
+                snapshotRepository(url: "http://nexus.eatuo.com:81/content/repositories/snapshots/") {
+                    authentication(userName: "deployment", password: "deployment")
+                }
+            }
+        }
     }
 
     ext {
@@ -24,8 +39,8 @@ subprojects {
     dependencies {
         //slf4j配置
         compile "org.slf4j:slf4j-api:${slf4jVersion}"
-        compile("ch.qos.logback:logback-classic:${logbackVersion}"){
-            exclude(group:"org.slf4j")
+        compile("ch.qos.logback:logback-classic:${logbackVersion}") {
+            exclude(group: "org.slf4j")
         }
         compile "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
 
@@ -39,13 +54,13 @@ subprojects {
         compile "commons-lang:commons-lang:2.6"
         compile "commons-io:commons-io:2.4"
         compile "commons-collections:commons-collections:3.2.2"
-        compile("commons-beanutils:commons-beanutils:1.9.2"){
-            exclude(group:" commons-logging")
-            exclude(group:" commons-collections")
+        compile("commons-beanutils:commons-beanutils:1.9.2") {
+            exclude(group: " commons-logging")
+            exclude(group: " commons-collections")
         }
-        compile("commons-digester:commons-digester:1.8"){
-            exclude(group:" commons-logging")
-            exclude(group:" commons-beanutils")
+        compile("commons-digester:commons-digester:1.8") {
+            exclude(group: " commons-logging")
+            exclude(group: " commons-beanutils")
         }
         compile "commons-codec:commons-codec:1.10"
 
@@ -62,4 +77,13 @@ subprojects {
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+    artifacts {
+        archives sourcesJar
+    }
+
 }
