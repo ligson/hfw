@@ -20,6 +20,9 @@ public class BaseQueryPageRequestDto extends BaseRequestDto {
     @Param(name = "当前分页号", required = false, min = 1)
     private Integer pageNum = 1;
 
+    @Param(name = "是否分页", required = false)
+    private Boolean pageAble = true;
+
 
     public Integer getPageSize() {
         return pageSize;
@@ -37,10 +40,21 @@ public class BaseQueryPageRequestDto extends BaseRequestDto {
         this.pageNum = pageNum;
     }
 
+    public Boolean getPageAble() {
+        return pageAble;
+    }
+
+    public void setPageAble(Boolean pageAble) {
+        this.pageAble = pageAble;
+    }
+
     @Override
     public String toString() {
-        return "BaseQueryPageRequestDto [pageSize=" + pageSize + ", pageNum=" + pageNum + ", toString()="
-                + super.toString() + "]";
+        return "BaseQueryPageRequestDto{" +
+                "pageSize=" + pageSize +
+                ", pageNum=" + pageNum +
+                ", pageAble=" + pageAble +
+                '}';
     }
 
 }
