@@ -37,6 +37,8 @@ public abstract class AbstractBiz<Q extends BaseRequestDto, R extends BaseRespon
      * 初始化通用信息：
      */
     private void init() {
+        context.setResult(null);
+        context.getAttrMap().clear();
         context.setBusinessDate(new Date());
         context.setCurrentDate(new Date());
         before();
