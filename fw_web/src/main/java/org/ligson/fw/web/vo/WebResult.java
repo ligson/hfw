@@ -1,4 +1,4 @@
-package org.ligson.fw.core.facade.web.vo;
+package org.ligson.fw.web.vo;
 
 
 import org.ligson.fw.core.facade.base.result.Result;

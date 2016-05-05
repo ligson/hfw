@@ -2,4 +2,5 @@ rootProject.name = 'fw'
 include 'fw_core'
 include 'fw_facade'
 include 'fw_string'
+include 'fw_web'
 
