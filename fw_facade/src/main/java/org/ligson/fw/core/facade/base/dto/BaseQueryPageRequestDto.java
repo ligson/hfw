@@ -23,6 +23,12 @@ public class BaseQueryPageRequestDto extends BaseRequestDto {
     @Param(name = "是否分页", required = false)
     private Boolean pageAble = true;
 
+    @Param(name = "排序字段", required = false)
+    private String sort;
+
+    @Param(name = "排序顺序", required = false, inList = {"DESC", "ASC", "desc", "asc"})
+    private String order;
+
 
     public Integer getPageSize() {
         return pageSize;
@@ -48,12 +54,30 @@ public class BaseQueryPageRequestDto extends BaseRequestDto {
         this.pageAble = pageAble;
     }
 
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
     @Override
     public String toString() {
         return "BaseQueryPageRequestDto{" +
                 "pageSize=" + pageSize +
                 ", pageNum=" + pageNum +
                 ", pageAble=" + pageAble +
+                ", sort='" + sort + '\'' +
+                ", order='" + order + '\'' +
                 '}';
     }
 

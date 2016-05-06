@@ -270,6 +270,9 @@ public class BaseDaoImpl<T extends BasicEntity> implements BaseDao<T> {
     }
 
     protected Pagination<T> paginationQuery(T t, String hql) {
+        if ((t.getSort() != null) && (t.getOrder() != null)) {
+            hql += " order by " + t.getSort() + " " + t.getOrder();
+        }
         Query query = currentSession().createQuery(hql);
         Pagination<T> pagination;
         if (t.getPageAble()) {
