@@ -52,7 +52,9 @@ public class BaseDaoImpl<T extends BasicEntity> implements BaseDao<T> {
     @Transactional("transactionManager")
     @Override
     public void update(T t) {
-        currentSession().update(t);
+        Session session = currentSession();
+        session.update(t);
+        session.flush();
     }
 
     @Transactional("transactionManager")

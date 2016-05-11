@@ -3,6 +3,7 @@ package org.ligson.fw.web.controller;
 import org.ligson.fw.web.vo.WebResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.ServletContext;
@@ -22,17 +23,19 @@ public class BaseController {
     protected ServletContext applicationContext;
     protected WebResult webResult = new WebResult();
     protected static Logger logger;
+    protected Model model;
 
     public BaseController() {
         logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @ModelAttribute
-    private void setRequestAndResponse(HttpServletRequest request, HttpServletResponse response) {
+    private void setRequestAndResponse(HttpServletRequest request, HttpServletResponse response, Model model) {
         this.request = request;
         this.response = response;
         this.session = request.getSession();
         this.applicationContext = request.getServletContext();
+        this.model = model;
     }
 
     public String redirect(String url) {
