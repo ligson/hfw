@@ -13,6 +13,6 @@ import java.io.Serializable;
 public class DateRandomGenerator implements IdentifierGenerator {
     @Override
     public Serializable generate(SessionImplementor session, Object object) throws HibernateException {
-        return IdUtils.randomBigInt();
+        return IdUtils.randomIntString();
     }
 }

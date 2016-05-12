@@ -27,10 +27,14 @@ public class IdUtils {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public static BigInteger randomBigInt() {
+    public static String randomIntString() {
         String prefix = sdf.format(new Date());
         prefix = prefix + randomNum(5);
-        return new BigInteger(prefix);
+        return prefix;
+    }
+
+    public static BigInteger randomBigInt() {
+        return new BigInteger(randomIntString());
     }
 
     public static void main(String[] args) {
