@@ -22,7 +22,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +37,8 @@ public class BaseDaoImpl<T extends BasicEntity> implements BaseDao<T> {
 
     @Transactional("transactionManager")
     @Override
-    public BigInteger add(T t) {
-        BigInteger id = (BigInteger) currentSession().save(t);
+    public Serializable add(T t) {
+        Serializable id = currentSession().save(t);
         currentSession().flush();
         return id;
     }
