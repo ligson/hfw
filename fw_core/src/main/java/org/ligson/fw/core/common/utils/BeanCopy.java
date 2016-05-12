@@ -46,6 +46,9 @@ public class BeanCopy {
             }
         }
         String[] nullProps = new String[nullPropList.size()];
+        for (int i = 0; i < nullProps.length; i++) {
+            nullProps[i] = nullPropList.get(i);
+        }
         BeanUtils.copyProperties(src, dest, nullProps);
     }
 
