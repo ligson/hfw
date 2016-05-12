@@ -4,6 +4,7 @@ package org.ligson.fw.core.common.crud;
 import org.ligson.fw.core.entity.BasicEntity;
 import org.ligson.fw.core.entity.Pagination;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface ICommonQuery<T extends BasicEntity> {
      * @param id id
      * @return 实体
      */
-    T get(long id);
+    T get(Serializable id);
 
     /***
      * 通过一个属性查询

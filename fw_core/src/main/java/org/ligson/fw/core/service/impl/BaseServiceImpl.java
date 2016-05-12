@@ -6,6 +6,7 @@ import org.ligson.fw.core.entity.BasicEntity;
 import org.ligson.fw.core.entity.Pagination;
 import org.ligson.fw.core.service.BaseService;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public abstract class BaseServiceImpl<T extends BasicEntity> implements BaseServ
     public abstract void initBaseDao();
 
     @Override
-    public T get(long id) {
+    public T get(Serializable id) {
         return (T) baseDao.get(id);
     }
 

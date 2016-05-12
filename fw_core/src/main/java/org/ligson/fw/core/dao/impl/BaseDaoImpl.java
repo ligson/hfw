@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -407,7 +408,7 @@ public class BaseDaoImpl<T extends BasicEntity> implements BaseDao<T> {
     }
 
     @Override
-    public T get(long id) {
+    public T get(Serializable id) {
         return (T) currentSession().get(getGenericType(0), id);
     }
 
