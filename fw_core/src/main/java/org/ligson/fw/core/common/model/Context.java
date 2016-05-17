@@ -37,6 +37,16 @@ public class Context {
         return attrMap.get(attr);
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T getAttr(String attr, Class<T> objCls) {
+        Object obj = attrMap.get(attr);
+        if (obj == null) {
+            return null;
+        } else {
+            return (T) obj;
+        }
+    }
+
 
     public Set<String> getAttributeNames() {
         return attrMap.keySet();
