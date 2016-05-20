@@ -38,6 +38,7 @@ public class HashHelper {
         return hash(source, "MD5");
     }
 
+
     public static String md5(String source, String charset) {
         return hash(source, "MD5", charset);
     }

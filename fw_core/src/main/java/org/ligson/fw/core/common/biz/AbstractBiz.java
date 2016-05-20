@@ -28,7 +28,7 @@ import java.util.Date;
 @SuppressWarnings("unused")
 public abstract class AbstractBiz<Q extends BaseRequestDto, R extends BaseResponseDto> {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractBiz.class);
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractBiz.class);
     protected Context context = new Context();
     protected Q requestDto;
     protected R responseDto;

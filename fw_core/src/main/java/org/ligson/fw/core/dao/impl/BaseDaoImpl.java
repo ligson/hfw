@@ -46,7 +46,9 @@ public class BaseDaoImpl<T extends BasicEntity> implements BaseDao<T> {
     @Transactional("transactionManager")
     @Override
     public void delete(T t) {
-        currentSession().delete(t);
+        Session session = currentSession();
+        session.delete(t);
+        session.flush();
     }
 
     @Transactional("transactionManager")
