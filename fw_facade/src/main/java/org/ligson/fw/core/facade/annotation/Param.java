@@ -23,7 +23,7 @@ public @interface Param {
     /***
      * 是否必备
      */
-    boolean required();
+    boolean required() default false;
 
     /***
      * 是否是邮箱
