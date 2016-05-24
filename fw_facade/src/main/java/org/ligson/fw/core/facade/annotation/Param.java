@@ -70,4 +70,11 @@ public @interface Param {
      */
     String[] inList() default {};
 
+    /***
+     * 参数描述
+     *
+     * @return 描述
+     */
+    String description() default "";
+
 }
