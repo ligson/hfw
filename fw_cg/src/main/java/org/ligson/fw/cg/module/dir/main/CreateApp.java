@@ -17,6 +17,7 @@ public class CreateApp extends AbstractCmd {
 
     @Override
     public int exec(String[] args) {
+        //第一次个参数是项目名
         String name = args[0];
         File root = new File(name);
         root.mkdirs();
