@@ -3,21 +3,30 @@ package org.ligson.fw.cg.main;
 import org.apache.commons.cli.*;
 import org.ligson.fw.cg.module.doc.main.CreateApiDoc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ligson on 2016/5/24.
  */
 public class SoEasy {
+    private static CreateApiDoc cad = new CreateApiDoc();
+    private static Options options = new Options();
+    private static List<AbstractCmd> cmds = new ArrayList<>();
+
+    static {
+        options.addOption(cad.getOption());
+        cmds.add(cad);
+    }
+
     public static void main(String[] args) throws Exception {
-        Option help = new Option("h", "help command");
-        Option createApiDocOpt = Option.builder("cad").hasArg().desc("create api documnet").longOpt("createApiDoc").build();
-        Options options = new Options();
-        options.addOption(help);
-        options.addOption(createApiDocOpt);
         CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(options, args);
-        if (cmd.hasOption(createApiDocOpt.getOpt())) {
-            String apiName = cmd.getOptionValue(createApiDocOpt.getOpt());
-            CreateApiDoc.exec(apiName, apiName + ".md");
+        CommandLine cmdLine = parser.parse(options, args);
+        for (AbstractCmd cmd : cmds) {
+            if (cmdLine.hasOption(cmd.getOption().getOpt())) {
+                cmd.exec(cmd.getOption().getValues());
+                break;
+            }
         }
     }
 }
