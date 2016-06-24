@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.reflect.MethodUtils;
 
 import org.springframework.util.ReflectionUtils;
 
 public class EventEngine {
     private static final ExecutorService es = Executors.newFixedThreadPool(5);
-    private static Map<Class<? extends Event>, List<EventListener<?>>> map = new ConcurrentHashMap<>();
+    private static Map<Class<? extends Event>, List<EventListener<?>>> map = new ConcurrentHashMap<Class<? extends Event>, List<EventListener<?>>>();
 
     /**
      * 派发事件，同步派发
