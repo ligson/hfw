@@ -27,7 +27,7 @@ public class Context {
      */
     private Date currentDate;
 
-    private Map<String, Object> attrMap = new HashMap<>();
+    private Map<String, Object> attrMap = new HashMap<String, Object>();
 
     public void setAttr(String attr, Object value) {
         attrMap.put(attr, value);
