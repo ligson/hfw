@@ -12,5 +12,7 @@
 
 3.开发文档待完善（请加扣扣群:程序员赚钱之道 450794233交流）
 
+4.springcloud版本代码生成工具地址:https://gitee.com/soeasy_cloud/cg
+
 
 
